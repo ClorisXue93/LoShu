@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 
-void testFunc(int test_twoDimArray[3][3]) {
-
+void testFunc(int test_twoDimArray[3][3], bool isMagicSquare) {
     //check first row
     int sum = 0;
     int check_LoShu = 0;
@@ -103,11 +105,50 @@ void testFunc(int test_twoDimArray[3][3]) {
 
     if (check_LoShu == 8) {
         printf("This test array is Lo Shu Magic Square\n");
+        isMagicSquare = true;
     }
     else
         printf("This test array is NOT Lo Shu Magic Square\n");
 }
 
-void getArray(int twoDimArray[3][3]) {
-    int numberArray[9];
+int getRandomNum() {
+    srand(time(NULL));
+    int num = (rand() % 9) + 1;
+    return num;
+}
+
+void getArray(int num, int twoDimArray[3][3]) {
+    bool numExist = false;
+    do {
+        // printf("Random number is: %i\n", num);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (twoDimArray[i][j] != num && twoDimArray[i][j] == 0) {
+                    twoDimArray[i][j] = num;
+                    numExist = true;
+                    num = getRandomNum();
+                    break;
+                }
+                else if (twoDimArray[i][j] == num) {
+                    numExist = true;
+                    num = getRandomNum();
+                    break;
+                }
+            }
+            numExist = false;
+        }
+    } while (numExist);
+}
+
+void displayArray(int twoDimArray[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        printf("[");
+        for (int j = 0; j < 3; j++) {
+            if (j == 2) 
+                printf("%i", twoDimArray[i][j]);
+            else
+                printf("%i ",twoDimArray[i][j]);
+        }
+        printf("]");
+    }
 }
